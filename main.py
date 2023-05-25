@@ -2,8 +2,9 @@ import streamlit as st
 from pyspark.sql import SparkSession
 from pyspark.ml.feature import StringIndexer, VectorAssembler
 from pyspark.ml.classification import RandomForestClassifier
-from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 from pyspark.sql.functions import col
+import findspark
+findspark.init()
 import os
 os.environ["JAVA_HOME"] = "C:\Program Files\Java\jdk-11"
 
