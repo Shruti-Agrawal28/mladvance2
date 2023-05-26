@@ -1,3 +1,4 @@
 pyspark
 streamlit==0.88.0
 findspark
+h2o

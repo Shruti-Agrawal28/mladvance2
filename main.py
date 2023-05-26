@@ -7,7 +7,8 @@ import findspark
 findspark.init()
 import os
 os.environ["JAVA_HOME"] = "C:\Program Files\Java\jdk-11"
-
+import h2o
+h2o.init()
 
 # Create a Spark session
 spark = SparkSession.builder.appName("LiverDiseaseClassification").getOrCreate()
