@@ -5,7 +5,6 @@ from pyspark.ml.classification import RandomForestClassifier
 from pyspark.sql.functions import col
 import os
 
-
 os.environ["JAVA_HOME"] = "C:\Program Files\Java\jdk-11"
 
 # Create a Spark session
@@ -16,7 +15,6 @@ data = spark.read.csv("indian_liver_patient.csv", header=True, inferSchema=True)
 
 # Handle missing values
 data = data.na.drop()
-
 
 # Prepare the data for modeling
 assembler = VectorAssembler(
@@ -54,8 +52,6 @@ def predict_liver_disease(input_df):
     return prediction
 
 
-
-
 # Define custom CSS styles
 styles = """
     .container {
@@ -86,24 +82,6 @@ styles = """
     }
 """
 
-
-def get_row_and_prediction(row_number):
-    pass
-    # Get the row at the specified index
-    row = data.take(row_number + 1)[-1]
-    # Make prediction
-    prediction = predict_liver_disease(data)
-
-    # Display the row and prediction
-    st.write("Row Details:")
-    st.write(row)
-    st.write("Prediction:")
-    if prediction == 1.0:
-        st.write("The model predicts that the patient has liver disease.")
-    else:
-        st.write("The model predicts that the patient does not have liver disease.")
-
-
 # Define the Streamlit app
 def main():
     # Set the title and sidebar
@@ -113,8 +91,23 @@ def main():
     # Get row details and prediction for a specific index
     index = st.sidebar.number_input("Enter an index to retrieve row details", min_value=0, max_value=data.count()-1, step=1)
     if st.sidebar.button("Get Row Details"):
-        get_row_and_prediction(index)
+        # Get the row at the specified index
+        row = data.take(index + 1)[-1]
+        # Make prediction
+        prediction = predict_liver_disease(data)
+
+        # Save the result to a file
+        result_file = "result.txt"
+        with open(result_file, "w") as f:
+            f.write("Row Details:\n")
+            f.write(str(row) + "\n")
+            f.write("Prediction:\n")
+            f.write("The model predicts that the patient has liver disease." if prediction == 1.0 else "The model predicts that the patient does not have liver disease.")
+
+        # Display the result in Streamlit
+        with open(result_file, "r") as f:
+            result = f.read()
+            st.text_area("Result", result)
 
 if __name__ == "__main__":
     main()
-
