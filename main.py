@@ -6,7 +6,7 @@ from pyspark.sql.functions import col
 import os
 
 
-os.environ["JAVA_HOME"] = "C:\Program Files\Java\jdk-11"
+os.environ["JAVA_HOME"] = "C:\Program Files\Java\jdk-20"
 
 # Create a Spark session
 spark = SparkSession.builder.appName("LiverDiseaseClassification").getOrCreate()
@@ -52,8 +52,6 @@ def predict_liver_disease(input_df):
     prediction = predictions.select("prediction").first()[0]
 
     return prediction
-
-
 
 
 # Define custom CSS styles
@@ -114,6 +112,7 @@ def main():
     index = st.sidebar.number_input("Enter an index to retrieve row details", min_value=0, max_value=data.count()-1, step=1)
     if st.sidebar.button("Get Row Details"):
         get_row_and_prediction(index)
+
 
 if __name__ == "__main__":
     main()
